@@ -1,10 +1,12 @@
 KwPBar for C
 ============
 
+![Travis CI Status](https://travis-ci.org/Kwpolska/kwpbar.c.svg?branch=master)
+
 A simple progress bar for console C programs.
 
 USAGE
-=====
+-----
 
 Include `kwpbar.h` in your program.
 
@@ -15,17 +17,22 @@ The following functions are available:
 * `void erase_pbar()` → erase the progress bar from the screen
 
 DEMO
-====
+----
 
 Run `make demo`.
 
 TEST SUITE
-==========
+----------
 
 Run `make test`.
 
+SEE ALSO
+--------
+
+[KwPBar for Python](https://github.com/Kwpolska/kwpbar.py)
+
 LICENSE
-=======
+-------
 
 Copyright © 2013–2015, Chris Warrick.
 All rights reserved.
