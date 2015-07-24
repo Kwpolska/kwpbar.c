@@ -1,14 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
+#include "kwpbar.h"
 
 /*
- * KwPBar for C, v0.2.0
+ * KwPBar for C, tests
  * Copyright © 2013–2015, Chris Warrick.
  * All rights reserved.
  *
@@ -41,51 +34,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-int get_termlength() {
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    return w.ws_col;
-}
-
-int pbar(double value, double max) {
-    int fullwidth = get_termlength();
-    int pbarwidth = fullwidth - 9;
-    double progress;
-    if (max == 0) {
-        fprintf(stderr, "ERROR: invalid progressbar maximum (0)\n");
-        return 1;
+int main(int argc, char* argv[]) {
+    fprintf(stderr, "KwPbar for C test suite\n");
+    fprintf(stderr, "\nTesting printing...\n");
+    int t1 = pbar(0, 2);  // 0
+    int t2 = pbar(1, 2);  // 0
+    int t3 = pbar(2, 2);  // 0
+    fprintf(stderr, "done.\n");
+    fprintf(stderr, "\nTesting erasing...\n");
+    int t4 = pbar(2, 3);  // 0
+    erase_pbar();
+    fprintf(stderr, "done.\n");
+    fprintf(stderr, "\nTesting expected failures...\n");
+    int t5 = pbar(1, 0);  // 1
+    int t6 = pbar(2, 1);  // 2
+    int t7 = pbar(-2, 1); // 2
+    fprintf(stderr, "done.\n");
+    int score = t1 + t2 + t3 + t4 + t5 + t6 + t7;
+    int expected = 5;
+    if (score == expected) {
+        fprintf(stderr, "\nPASS (error score %d/%d)\n", score, expected);
     } else {
-        progress = value / max;
+        fprintf(stderr, "\nFAIL (error score %d/%d)\n", score, expected);
     }
-
-    // calculate percentage
-    double perc = progress * 100;
-    char percs[10];
-    sprintf(percs, " %4.1f", perc);
-
-    // calculate things to display
-    int now = round(progress * pbarwidth);
-    char bar[fullwidth];
-    memset(bar, '\0', sizeof(bar));
-    memset(bar, ' ', pbarwidth);
-    if (progress == 1) {
-        memset(bar, '=', now);
-    } else if (progress < 0 || progress > 1) {
-        fprintf(stderr, "ERROR: invalid progressbar value (not in range [0, 1])\n");
-        return 2;
-    } else if (progress != 0) {
-        memset(bar, '=', now - 1);
-        bar[now - 1] = '>';
-    }
-
-    fprintf(stderr, "\r[%s]%s%%", bar, percs);
-    return 0;
-}
-
-void erase_pbar() {
-    int fullwidth = get_termlength();
-    char bar[fullwidth];
-    memset(bar, '\0', sizeof(bar));
-    memset(bar, ' ', fullwidth);
-    fprintf(stderr, "\r%s\r", bar);
+    return (expected - score);
 }

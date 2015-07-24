@@ -11,8 +11,18 @@ Include `kwpbar.h` in your program.
 The following functions are available:
 
 * `int get_termlength()` → return terminal length (columns); helper function
-* `void pbar(double value, double max)` → print a progress bar to the screen (stderr)
+* `int pbar(double value, double max)` → print a progress bar to the screen (stderr).  Returns 0 for success, 1 for failure.
 * `void erase_pbar()` → erase the progress bar from the screen
+
+DEMO
+====
+
+Run `make demo`.
+
+TEST SUITE
+==========
+
+Run `make test`.
 
 LICENSE
 =======
