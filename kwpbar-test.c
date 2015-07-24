@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     int t1 = pbar(0, 2);  // 0
     int t2 = pbar(1, 2);  // 0
     int t3 = pbar(2, 2);  // 0
-    fprintf(stderr, "done.\n");
+    fprintf(stderr, "\ndone.\n");
     fprintf(stderr, "\nTesting erasing...\n");
     int t4 = pbar(2, 3);  // 0
     erase_pbar();
